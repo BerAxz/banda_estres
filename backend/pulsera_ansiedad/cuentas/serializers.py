@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Usuario
+from .models import Usuario, ConfiguracionesUsuario
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,7 +13,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         
 class ConfiguracionesUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Usuario.configuracionesusuario_set.model
+        model = ConfiguracionesUsuario
         fields = ('usuario', 'notificaciones_push', 'notificaciones_email',
                   'umbral_personalizado_bpm', 'umbral_personalizado_spo2',
                   'umbral_personalizado_temp', 'modo_privado',
