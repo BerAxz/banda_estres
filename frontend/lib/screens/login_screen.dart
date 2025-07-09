@@ -2,10 +2,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:frontend/widgets/input.dart';
 import 'package:frontend/widgets/custom_checkbox.dart';
 import 'package:frontend/api/api.dart';
-import 'package:frontend/screens/home_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -44,9 +44,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ServiceLocator().updateAuthToken(token);
         
         // Navegar al home
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
+        if (mounted) {
+          context.go('/home');
+        }
       }
     } on ApiException catch (e) {
       String errorMessage = e.message;
@@ -83,13 +83,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
       extendBody: true,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: EdgeInsets.fromLTRB(
             24.w,
             120.h,
             24.w,
-            12.h
+            24.h
           ),
           child: Column(
             spacing: 32.h,
@@ -190,8 +191,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      // Aquí puedes navegar a la pantalla de registro
-                      Navigator.pushNamed(context, '/register');
+                      // Navegar a la pantalla de registro
+                      if (mounted) {
+                        context.push('/register');
+                      }
                     },
                     child: Text(
                       'No tienes cuenta? Regístrate',
@@ -205,9 +208,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ],
               )
             ],
-          )
-        )
-      )
+          ),
+        ),
+      ),
     );
   }
 
