@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/widgets/background_container.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:frontend/core/router/app_router.dart';
 import 'api/api.dart';
 
 
@@ -55,15 +55,14 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return MaterialApp(
+        return MaterialApp.router(
           title: 'Banda de Estrés IoT',
           debugShowCheckedModeBanner: false,
           theme: _buildAppTheme(),
-          home: child,
+          routerConfig: AppRouter.router,
           builder: _buildAppWrapper,
         );
       },
-      child: const LoginScreen(),
     );
   }
 
