@@ -1,7 +1,9 @@
 import sys
 import os
+import threading
 from django.core.management.base import BaseCommand
 from django.conf import settings
+from django.core.management import call_command
 
 class Command(BaseCommand):
     help = 'Inicia el servidor Django con soporte completo para WebSockets usando Daphne'
@@ -24,6 +26,14 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f'Iniciando servidor Daphne en {addr}:{port}...'))
         self.stdout.write(self.style.SUCCESS('WebSockets habilitados y funcionando'))
         
+        # Iniciar el websocket_listener en un hilo separado
+        self.stdout.write(self.style.SUCCESS('Iniciando websocket_listener para conectar con ThingsBoard...'))
+        websocket_thread = threading.Thread(
+            target=self._ejecutar_websocket_listener,
+            daemon=True  # El hilo se cerrará cuando el hilo principal termine
+        )
+        websocket_thread.start()
+        
         try:
             # Usar Daphne para ejecutar el servidor
             from daphne.cli import CommandLineInterface
@@ -37,3 +47,10 @@ class Command(BaseCommand):
             self.stderr.write(self.style.ERROR('Daphne no está instalado. Instala con: pip install daphne'))
         except Exception as e:
             self.stderr.write(self.style.ERROR(f'Error al iniciar Daphne: {e}'))
+            
+    def _ejecutar_websocket_listener(self):
+        """Ejecuta el comando websocket_listener en un proceso separado"""
+        try:
+            call_command('websocket_listener')
+        except Exception as e:
+            self.stderr.write(self.style.ERROR(f'Error en websocket_listener: {e}'))
