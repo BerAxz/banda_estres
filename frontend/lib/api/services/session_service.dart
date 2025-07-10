@@ -11,6 +11,40 @@ class SessionService implements ISessionService {
 
   SessionService(this._apiClient);
 
+
+  @override
+  Future<PaginatedResponse<Session>> getSessionsByUserId({
+    required int usuarioId,
+    int page = 1,
+    int pageSize = 20,
+    bool? activa,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{
+        'page': page,
+        'page_size': pageSize,
+        if (activa != null) 'activa': activa,
+        if (startDate != null) 'start_date': startDate.toIso8601String(),
+        if (endDate != null) 'end_date': endDate.toIso8601String(),
+      };
+
+      final response = await _apiClient.client.get(
+        '/usuarios/$usuarioId/sesiones',
+        queryParameters: queryParams,
+      );
+
+      return PaginatedResponse.fromJson(
+        response.data,
+        (json) => Session.fromJson(json as Map<String, dynamic>),
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
+
+
   @override
   Future<PaginatedResponse<Session>> getSessions({
     int page = 1,
@@ -31,7 +65,7 @@ class SessionService implements ISessionService {
       };
 
       final response = await _apiClient.client.get(
-        '/sessions',
+        '/sesiones',
         queryParameters: queryParams,
       );
 
@@ -47,7 +81,7 @@ class SessionService implements ISessionService {
   @override
   Future<ApiResponse<Session>> getSessionById(int id) async {
     try {
-      final response = await _apiClient.client.get('/sessions/$id');
+      final response = await _apiClient.client.get('/sesiones/$id');
 
       return ApiResponse.fromJson(
         response.data,
@@ -66,7 +100,7 @@ class SessionService implements ISessionService {
   }) async {
     try {
       final response = await _apiClient.client.post(
-        '/sessions',
+        '/sesiones',
         data: {
           'usuario_id': usuarioId,
           'pulsera_id': pulseraId,
@@ -90,7 +124,7 @@ class SessionService implements ISessionService {
   ) async {
     try {
       final response = await _apiClient.client.put(
-        '/sessions/$id',
+        '/sesiones/$id',
         data: data,
       );
 
@@ -107,7 +141,7 @@ class SessionService implements ISessionService {
   Future<ApiResponse<Session>> endSession(int id) async {
     try {
       final response = await _apiClient.client.patch(
-        '/sessions/$id/end',
+        '/sesiones/$id/end',
         data: {
           'activa': false,
           'fecha_fin': DateTime.now().toIso8601String(),
@@ -126,7 +160,7 @@ class SessionService implements ISessionService {
   @override
   Future<ApiResponse<void>> deleteSession(int id) async {
     try {
-      final response = await _apiClient.client.delete('/sessions/$id');
+      final response = await _apiClient.client.delete('/sesiones/$id');
 
       return ApiResponse.fromJson(
         response.data,
@@ -141,7 +175,7 @@ class SessionService implements ISessionService {
   Future<ApiResponse<Session?>> getActiveSession(int usuarioId) async {
     try {
       final response = await _apiClient.client.get(
-        '/sessions/active',
+        '/sesiones/active',
         queryParameters: {'usuario_id': usuarioId},
       );
 
