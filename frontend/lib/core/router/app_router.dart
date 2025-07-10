@@ -1,4 +1,5 @@
 import 'package:frontend/screens/account_screen.dart';
+import 'package:frontend/screens/device_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/login_screen.dart';
@@ -75,11 +76,7 @@ class AppRouter {
         name: 'device',
         pageBuilder: (context, state) => NoTransitionPage(
           key: state.pageKey,
-          child: const PlaceholderScreen(
-            title: 'Dispositivo',
-            icon: Icons.watch_outlined,
-            description: 'Gestiona la configuración de tu banda de estrés.',
-          ),
+          child: const DeviceScreen(),
         ),
       ),
       GoRoute(
