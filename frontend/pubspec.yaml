@@ -79,6 +79,7 @@ flutter:
 
   assets:
     - assets/images/background.png
+    - assets/images/pulsera_imagen.png
     - assets/svg/
 
   fonts:
