@@ -4,13 +4,13 @@ part 'notification_model.freezed.dart';
 part 'notification_model.g.dart';
 
 enum NotificationType { 
-  ANXIETY_ALERT, 
-  RECOMMENDATION_BREATHING, 
-  RECOMMENDATION_BREAK, 
-  SYSTEM_MESSAGE 
+  anxietyAlert, 
+  recommendationBreathing, 
+  recommendationBreak, 
+  systemMessage 
 }
 
-enum MetodoEnvio { PUSH, EMAIL }
+enum MetodoEnvio { push, email }
 
 @freezed
 abstract class NotificationModel with _$NotificationModel {
