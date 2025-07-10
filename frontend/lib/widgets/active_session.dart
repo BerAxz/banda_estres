@@ -14,8 +14,6 @@ class ActiveSession extends StatelessWidget {
 
   final double width;
 
-
-
   const ActiveSession({
     super.key,
     required this.isActive,
