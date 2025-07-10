@@ -108,7 +108,7 @@ class DeviceService implements IDeviceService {
 
       return ApiResponse.fromJson(
         response.data,
-        (json) => null,
+        (json) => {},
       );
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);

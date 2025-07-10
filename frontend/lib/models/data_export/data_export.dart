@@ -3,9 +3,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'data_export.freezed.dart';
 part 'data_export.g.dart';
 
-enum TipoDatos { FULL, SUMMARY }
-enum FormatoExport { CSV, JSON, XLSX }
-enum EstadoExport { PENDING, READY, FAILED }
+enum TipoDatos { full, summary }
+enum FormatoExport { csv, json, xlsx }
+enum EstadoExport { pending, ready, failed }
 
 @freezed
 abstract class DataExport with _$DataExport {

@@ -117,7 +117,7 @@ class NotificationService implements INotificationService {
 
       return ApiResponse.fromJson(
         response.data,
-        (json) => null,
+        (json) => {},
       );
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
@@ -131,7 +131,7 @@ class NotificationService implements INotificationService {
 
       return ApiResponse.fromJson(
         response.data,
-        (json) => null,
+        (json) => {},
       );
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);

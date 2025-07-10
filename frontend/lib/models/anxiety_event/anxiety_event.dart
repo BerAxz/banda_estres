@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'anxiety_event.freezed.dart';
 part 'anxiety_event.g.dart';
 
-enum AnxietyLevel { LOW, MEDIUM, HIGH }
+enum AnxietyLevel { low, medium, high }
 
 @freezed
 abstract class AnxietyEvent with _$AnxietyEvent {
