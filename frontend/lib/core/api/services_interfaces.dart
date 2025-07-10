@@ -91,10 +91,10 @@ abstract class IPhysiologicalDataService {
 /// Interfaz para el servicio de eventos de ansiedad
 abstract class IAnxietyEventService {
   /// Gestión de eventos de ansiedad
-  Future<PaginatedResponse<AnxietyEvent>> getAnxietyEvents({
+  Future<PaginatedResponse<AnxietyEvent>> getAnxietyEventsByUserId({
+    required int usuarioId,
     int page = 1,
     int pageSize = 20,
-    int? usuarioId,
     int? sesionId,
     AnxietyLevel? nivelAnsiedad,
     DateTime? startDate,
@@ -134,6 +134,15 @@ abstract class IAnxietyEventService {
 
 /// Interfaz para el servicio de sesiones
 abstract class ISessionService {
+
+  Future<PaginatedResponse<Session>> getSessionsByUserId({
+    required int usuarioId,
+    int page = 1,
+    int pageSize = 20,
+    bool? activa,
+    DateTime? startDate,
+    DateTime? endDate,
+  });
   /// Gestión de sesiones de monitoreo
   Future<PaginatedResponse<Session>> getSessions({
     int page = 1,
