@@ -2,6 +2,7 @@ from django.db import models
 from instituciones.models import Institucion, Grupo
 from dispositivos.models import Pulsera
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.exceptions import ValidationError
 class Usuario(models.Model):
     USER = 'USER'
     INSTITUTIONAL_USER = 'INSTITUTIONAL_USER'
@@ -47,6 +48,32 @@ class Usuario(models.Model):
         
     def check_password(self, raw_password):
         return check_password(raw_password, self.password_hash)
+    
+    def clean(self):
+        """Validación personalizada del modelo"""
+        super().clean()
+        
+        # Los usuarios institucionales deben tener institución
+        if self.tipo_usuario in [self.INSTITUTIONAL_USER, self.INSTITUTION_ADMIN]:
+            if not self.institucion_id:
+                raise ValidationError("Los usuarios institucionales deben tener una institución asignada")
+        
+        # Los usuarios personales no deben tener institución ni grupo
+        if self.tipo_usuario == self.USER:
+            if self.institucion_id or self.grupo_id:
+                raise ValidationError("Los usuarios personales no pueden tener institución o grupo asignado")
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return f"{self.email} - {self.get_tipo_usuario_display()}"
+    
+    class Meta:
+        db_table = 'cuentas_usuario'
+        verbose_name = 'Usuario'
+        verbose_name_plural = 'Usuarios'
     
 
 class ConfiguracionesUsuario(models.Model):

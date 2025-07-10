@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-y#lgcuga1h5m-(bl9_vkyz67(r@j%+fchhk817+8daeyvp01sz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
@@ -39,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'channels',
+    'corsheaders',
     'cuentas',
     'dispositivos',
     'instituciones',
@@ -46,9 +51,11 @@ INSTALLED_APPS = [
     'reportes',
     'sesiones',
     'autenticacion',
+    'integracion_thingsboard',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -76,6 +83,35 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pulsera_ansiedad.wsgi.application'
+ASGI_APPLICATION = 'pulsera_ansiedad.asgi.application'
+
+# Configuración de Channels
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
+
+# Configuración CORS para frontend
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:3001", 
+    "http://127.0.0.1:3001",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_ALL_ORIGINS = True  # Solo para desarrollo
+
+# Configuración WebSocket
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "*",  # Solo para desarrollo
+]
 
 
 # Database
@@ -109,12 +145,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+    'rest_framework.permissions.AllowAny',
+],
 }
 
 
