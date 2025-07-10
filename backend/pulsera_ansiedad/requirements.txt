@@ -7,3 +7,4 @@ django-cors-headers==4.3.1
 websocket-client==1.8.0
 paho-mqtt==2.1.0
 requests==2.32.3
+daphne==4.1.0
