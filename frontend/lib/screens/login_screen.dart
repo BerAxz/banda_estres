@@ -38,9 +38,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         password: _passwordController.text,
       );
 
-      if (response.data != null) {
+      if (response.success) {
         // Login exitoso
-        final token = response.data!['access_token'] as String;
+        final token = response.data!['access'] as String;
         ServiceLocator().updateAuthToken(token);
         
         // Navegar al home

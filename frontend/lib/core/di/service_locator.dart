@@ -1,4 +1,5 @@
 import '../api/api_client.dart';
+import '../api/api_client_factory.dart';
 import '../api/services_interfaces.dart';
 import '../../api/services/user_service.dart';
 import '../../api/services/physiological_data_service.dart';
@@ -16,6 +17,7 @@ class ServiceLocator {
   ServiceLocator._internal();
 
   late final ApiClient _apiClient;
+  late final ApiClientFactory _apiClientFactory;
   late final IUserService _userService;
   late final IPhysiologicalDataService _physiologicalDataService;
   late final IAnxietyEventService _anxietyEventService;
@@ -29,16 +31,17 @@ class ServiceLocator {
   void initialize() {
     if (_initialized) return;
 
-    // Inicializar cliente API
+    // Inicializar cliente API y la factory
     _apiClient = ApiClient();
+    _apiClientFactory = ApiClientFactory();
 
     // Inicializar servicios con inyección de dependencias
-    _userService = UserService(_apiClient);
-    _physiologicalDataService = PhysiologicalDataService(_apiClient);
-    _anxietyEventService = AnxietyEventService(_apiClient);
-    _sessionService = SessionService(_apiClient);
-    _deviceService = DeviceService(_apiClient);
-    _notificationService = NotificationService(_apiClient);
+    _userService = UserService(null);
+    _physiologicalDataService = PhysiologicalDataService(null);
+    _anxietyEventService = AnxietyEventService(null);
+    _sessionService = SessionService(null);
+    _deviceService = DeviceService(null);
+    _notificationService = NotificationService(null);
 
     _initialized = true;
   }
@@ -47,6 +50,12 @@ class ServiceLocator {
   ApiClient get apiClient {
     _ensureInitialized();
     return _apiClient;
+  }
+  
+  /// Obtiene la factory de clientes API
+  ApiClientFactory get apiClientFactory {
+    _ensureInitialized();
+    return _apiClientFactory;
   }
 
   /// Obtiene el servicio de usuarios
@@ -88,13 +97,13 @@ class ServiceLocator {
   /// Actualiza el token de autenticación en todos los servicios
   void updateAuthToken(String token) {
     _ensureInitialized();
-    _apiClient.updateAuthToken(token);
+    _apiClientFactory.updateAuthToken(token);
   }
 
   /// Remueve el token de autenticación
   void removeAuthToken() {
     _ensureInitialized();
-    _apiClient.removeAuthToken();
+    _apiClientFactory.removeAuthToken();
   }
 
   /// Verifica que el ServiceLocator esté inicializado

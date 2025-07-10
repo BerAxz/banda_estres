@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
 import '../../models/notification/notification_model.dart';
-import '../../core/api/api_client.dart';
+import '../../core/api/api_client_factory.dart';
 import '../../core/api/api_exception.dart';
 import '../../core/api/api_response.dart';
 import '../../core/api/services_interfaces.dart';
 
 /// Implementación concreta del servicio de notificaciones
 class NotificationService implements INotificationService {
-  final ApiClient _apiClient;
+  final ApiClientFactory _apiClientFactory;
 
-  NotificationService(this._apiClient);
+  NotificationService(_) : _apiClientFactory = ApiClientFactory();
 
   @override
   Future<PaginatedResponse<NotificationModel>> getNotifications({
@@ -28,8 +28,11 @@ class NotificationService implements INotificationService {
         if (tipo != null) 'tipo': tipo,
       };
 
-      final response = await _apiClient.client.get(
-        '/notifications',
+      final endpoint = '/notifications';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(
+        endpoint,
         queryParameters: queryParams,
       );
 
@@ -45,7 +48,10 @@ class NotificationService implements INotificationService {
   @override
   Future<ApiResponse<NotificationModel>> getNotificationById(int id) async {
     try {
-      final response = await _apiClient.client.get('/notifications/$id');
+      final endpoint = '/notifications/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(endpoint);
 
       return ApiResponse.fromJson(
         response.data,
@@ -65,8 +71,11 @@ class NotificationService implements INotificationService {
     Map<String, dynamic>? metadatos,
   }) async {
     try {
-      final response = await _apiClient.client.post(
-        '/notifications',
+      final endpoint = '/notifications';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.post(
+        endpoint,
         data: {
           'usuario_id': usuarioId,
           'titulo': titulo,
@@ -88,8 +97,11 @@ class NotificationService implements INotificationService {
   @override
   Future<ApiResponse<NotificationModel>> markAsRead(int id) async {
     try {
-      final response = await _apiClient.client.patch(
-        '/notifications/$id/read',
+      final endpoint = '/notifications/$id/read';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.patch(
+        endpoint,
         data: {
           'leida': true,
           'fecha_leida': DateTime.now().toIso8601String(),
@@ -108,8 +120,11 @@ class NotificationService implements INotificationService {
   @override
   Future<ApiResponse<void>> markAllAsRead(int usuarioId) async {
     try {
-      final response = await _apiClient.client.patch(
-        '/notifications/mark-all-read',
+      final endpoint = '/notifications/mark-all-read';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.patch(
+        endpoint,
         data: {
           'usuario_id': usuarioId,
         },
@@ -127,7 +142,10 @@ class NotificationService implements INotificationService {
   @override
   Future<ApiResponse<void>> deleteNotification(int id) async {
     try {
-      final response = await _apiClient.client.delete('/notifications/$id');
+      final endpoint = '/notifications/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.delete(endpoint);
 
       return ApiResponse.fromJson(
         response.data,

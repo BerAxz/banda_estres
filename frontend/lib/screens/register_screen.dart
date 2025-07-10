@@ -41,10 +41,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         password: _passwordController.text,
         nombre: _nombreController.text.trim(),
         apellido: _apellidoController.text.trim(),
-        tipoUsuario: 'estudiante', // Valor por defecto
+        tipoUsuario: 'USER', // Valor por defecto
       );
 
-      if (response.data != null) {
+      if (response.success) {
         // Registro exitoso, navegar al login
         _showSnackBar('Registro exitoso. Ahora puedes iniciar sesión');
         if (mounted) {
