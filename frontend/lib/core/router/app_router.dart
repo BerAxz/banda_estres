@@ -1,8 +1,12 @@
+import 'package:frontend/screens/account_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/screens/register_screen.dart';
 import 'package:frontend/screens/home_screen.dart';
+import 'package:frontend/screens/menu_screen.dart';
+import 'package:frontend/screens/personal_data_screen.dart';
+import 'package:frontend/screens/placeholder_screen.dart';
 
 /// Configuración de rutas de la aplicación usando GoRouter
 class AppRouter {
@@ -36,6 +40,70 @@ class AppRouter {
         pageBuilder: (context, state) => NoTransitionPage(
           key: state.pageKey,
           child: const HomeScreen(),
+        ),
+      ),
+      
+      // Ruta del menú
+      GoRoute(
+        path: '/menu',
+        name: 'menu',
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const MenuScreen(),
+        ),
+      ),
+      
+      // Rutas placeholder para el menú
+      GoRoute(
+        path: '/profile',
+        name: 'profile',
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const PersonalDataScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/account',
+        name: 'account',
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const AccountScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/device',
+        name: 'device',
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const PlaceholderScreen(
+            title: 'Dispositivo',
+            icon: Icons.watch_outlined,
+            description: 'Gestiona la configuración de tu banda de estrés.',
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/sessions',
+        name: 'sessions',
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const PlaceholderScreen(
+            title: 'Sesiones',
+            icon: Icons.timeline_outlined,
+            description: 'Revisa tus sesiones de monitoreo y análisis.',
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/history',
+        name: 'history',
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const PlaceholderScreen(
+            title: 'Historial de eventos',
+            icon: Icons.history_outlined,
+            description: 'Consulta el historial completo de eventos de estrés.',
+          ),
         ),
       ),
       
