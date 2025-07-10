@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
 import '../../models/dispositivo/dispositivo.dart';
-import '../../core/api/api_client.dart';
+import '../../core/api/api_client_factory.dart';
 import '../../core/api/api_exception.dart';
 import '../../core/api/api_response.dart';
 import '../../core/api/services_interfaces.dart';
 
 /// Implementación concreta del servicio de dispositivos
 class DeviceService implements IDeviceService {
-  final ApiClient _apiClient;
+  final ApiClientFactory _apiClientFactory;
 
-  DeviceService(this._apiClient);
+  DeviceService(_) : _apiClientFactory = ApiClientFactory();
 
   @override
   Future<PaginatedResponse<Dispositivo>> getDevices({
@@ -28,8 +28,11 @@ class DeviceService implements IDeviceService {
         if (usuarioAsignado != null) 'usuario_asignado': usuarioAsignado,
       };
 
-      final response = await _apiClient.client.get(
-        '/devices',
+      final endpoint = '/devices';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(
+        endpoint,
         queryParameters: queryParams,
       );
 
@@ -45,7 +48,9 @@ class DeviceService implements IDeviceService {
   @override
   Future<ApiResponse<Dispositivo>> getDeviceById(int id) async {
     try {
-      final response = await _apiClient.client.get('/devices/$id');
+      final endpoint = '/devices/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      final response = await client.get(endpoint);
 
       return ApiResponse.fromJson(
         response.data,
@@ -63,8 +68,11 @@ class DeviceService implements IDeviceService {
     String? ubicacion,
   }) async {
     try {
-      final response = await _apiClient.client.post(
-        '/devices',
+      final endpoint = '/devices';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.post(
+        endpoint,
         data: {
           'numero_serie': numeroSerie,
           'modelo': modelo,
@@ -87,8 +95,11 @@ class DeviceService implements IDeviceService {
     Map<String, dynamic> data,
   ) async {
     try {
-      final response = await _apiClient.client.put(
-        '/devices/$id',
+      final endpoint = '/devices/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.put(
+        endpoint,
         data: data,
       );
 
@@ -104,7 +115,10 @@ class DeviceService implements IDeviceService {
   @override
   Future<ApiResponse<void>> deleteDevice(int id) async {
     try {
-      final response = await _apiClient.client.delete('/devices/$id');
+      final endpoint = '/devices/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.delete(endpoint);
 
       return ApiResponse.fromJson(
         response.data,
@@ -121,8 +135,11 @@ class DeviceService implements IDeviceService {
     required int usuarioId,
   }) async {
     try {
-      final response = await _apiClient.client.patch(
-        '/devices/$deviceId/assign',
+      final endpoint = '/devices/$deviceId/assign';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.patch(
+        endpoint,
         data: {
           'usuario_asignado': usuarioId,
         },
@@ -140,8 +157,11 @@ class DeviceService implements IDeviceService {
   @override
   Future<ApiResponse<Dispositivo>> unassignDevice(int deviceId) async {
     try {
-      final response = await _apiClient.client.patch(
-        '/devices/$deviceId/unassign',
+      final endpoint = '/devices/$deviceId/unassign';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.patch(
+        endpoint,
         data: {
           'usuario_asignado': null,
         },
@@ -159,7 +179,10 @@ class DeviceService implements IDeviceService {
   @override
   Future<ApiResponse<Map<String, dynamic>>> getDeviceStatus(int id) async {
     try {
-      final response = await _apiClient.client.get('/devices/$id/status');
+      final endpoint = '/devices/$id/status';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(endpoint);
 
       return ApiResponse.fromJson(
         response.data,

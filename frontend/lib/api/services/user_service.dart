@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import '../../models/user/user.dart';
-import '../../core/api/api_client.dart';
+import '../../core/api/api_client_factory.dart';
 import '../../core/api/api_exception.dart';
 import '../../core/api/api_response.dart';
 import '../../core/api/services_interfaces.dart';
@@ -8,9 +8,9 @@ import '../../core/api/services_interfaces.dart';
 /// Implementación concreta del servicio de usuarios
 /// Aplica el principio de responsabilidad única (SRP)
 class UserService implements IUserService {
-  final ApiClient _apiClient;
+  final ApiClientFactory _apiClientFactory;
 
-  UserService(this._apiClient);
+  UserService(_) : _apiClientFactory = ApiClientFactory();
 
   @override
   Future<ApiResponse<Map<String, dynamic>>> login({
@@ -18,8 +18,11 @@ class UserService implements IUserService {
     required String password,
   }) async {
     try {
-      final response = await _apiClient.client.post(
-        '/auth/login',
+      final endpoint = '/auth/login/';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.post(
+        endpoint,
         data: {
           'email': email,
           'password': password,
@@ -38,7 +41,10 @@ class UserService implements IUserService {
   @override
   Future<ApiResponse<Map<String, dynamic>>> logout() async {
     try {
-      final response = await _apiClient.client.post('/auth/logout');
+      final endpoint = '/auth/logout/';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.post(endpoint);
       
       return ApiResponse.fromJson(
         response.data,
@@ -58,8 +64,11 @@ class UserService implements IUserService {
     required String tipoUsuario,
   }) async {
     try {
-      final response = await _apiClient.client.post(
-        '/auth/register',
+      final endpoint = '/auth/registro/';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.post(
+        endpoint,
         data: {
           'email': email,
           'password': password,
@@ -95,8 +104,11 @@ class UserService implements IUserService {
         if (activo != null) 'activo': activo,
       };
 
-      final response = await _apiClient.client.get(
-        '/users',
+      final endpoint = '/users';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(
+        endpoint,
         queryParameters: queryParams,
       );
 
@@ -112,7 +124,10 @@ class UserService implements IUserService {
   @override
   Future<ApiResponse<User>> getUserById(int id) async {
     try {
-      final response = await _apiClient.client.get('/users/$id');
+      final endpoint = '/users/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(endpoint);
 
       return ApiResponse.fromJson(
         response.data,
@@ -126,7 +141,10 @@ class UserService implements IUserService {
   @override
   Future<ApiResponse<User>> getCurrentUser() async {
     try {
-      final response = await _apiClient.client.get('/auth/me');
+      final endpoint = '/auth/me';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(endpoint);
       
       return ApiResponse.fromJson(
         response.data,
@@ -140,7 +158,10 @@ class UserService implements IUserService {
   @override
   Future<ApiResponse<User>> updateUser(int id, Map<String, dynamic> data) async {
     try {
-      final response = await _apiClient.client.put('/users/$id', data: data);
+      final endpoint = '/users/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.put(endpoint, data: data);
 
       return ApiResponse.fromJson(
         response.data,
@@ -154,7 +175,10 @@ class UserService implements IUserService {
   @override
   Future<ApiResponse<void>> deleteUser(int id) async {
     try {
-      final response = await _apiClient.client.delete('/users/$id');
+      final endpoint = '/users/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.delete(endpoint);
 
       return ApiResponse.fromJson(
         response.data,
@@ -168,7 +192,10 @@ class UserService implements IUserService {
   @override
   Future<ApiResponse<User>> updateProfile(Map<String, dynamic> data) async {
     try {
-      final response = await _apiClient.client.put('/users/profile', data: data);
+      final endpoint = '/users/profile';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.put(endpoint, data: data);
 
       return ApiResponse.fromJson(
         response.data,
@@ -185,8 +212,11 @@ class UserService implements IUserService {
     required String newPassword,
   }) async {
     try {
-      final response = await _apiClient.client.put(
-        '/users/change-password',
+      final endpoint = '/users/change-password';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.put(
+        endpoint,
         data: {
           'current_password': currentPassword,
           'new_password': newPassword,

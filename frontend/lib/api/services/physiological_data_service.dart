@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
 import '../../models/physiological_data/physiological_data.dart';
-import '../../core/api/api_client.dart';
+import '../../core/api/api_client_factory.dart';
 import '../../core/api/api_exception.dart';
 import '../../core/api/api_response.dart';
 import '../../core/api/services_interfaces.dart';
 
 /// Implementación concreta del servicio de datos fisiológicos
 class PhysiologicalDataService implements IPhysiologicalDataService {
-  final ApiClient _apiClient;
+  final ApiClientFactory _apiClientFactory;
 
-  PhysiologicalDataService(this._apiClient);
+  PhysiologicalDataService(_) : _apiClientFactory = ApiClientFactory();
 
   @override
   Future<PaginatedResponse<PhysiologicalData>> getPhysiologicalData({
@@ -30,8 +30,11 @@ class PhysiologicalDataService implements IPhysiologicalDataService {
         if (endDate != null) 'end_date': endDate.toIso8601String(),
       };
 
-      final response = await _apiClient.client.get(
-        '/physiological-data',
+      final endpoint = '/physiological-data';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(
+        endpoint,
         queryParameters: queryParams,
       );
 
@@ -47,7 +50,10 @@ class PhysiologicalDataService implements IPhysiologicalDataService {
   @override
   Future<ApiResponse<PhysiologicalData>> getPhysiologicalDataById(int id) async {
     try {
-      final response = await _apiClient.client.get('/physiological-data/$id');
+      final endpoint = '/physiological-data/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(endpoint);
 
       return ApiResponse.fromJson(
         response.data,
@@ -70,8 +76,11 @@ class PhysiologicalDataService implements IPhysiologicalDataService {
     required int calidadSenal,
   }) async {
     try {
-      final response = await _apiClient.client.post(
-        '/physiological-data',
+      final endpoint = '/physiological-data';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.post(
+        endpoint,
         data: {
           'sesion_id': sesionId,
           'usuario_id': usuarioId,
@@ -106,8 +115,11 @@ class PhysiologicalDataService implements IPhysiologicalDataService {
         if (endDate != null) 'end_date': endDate.toIso8601String(),
       };
 
-      final response = await _apiClient.client.get(
-        '/physiological-data/statistics',
+      final endpoint = '/physiological-data/statistics';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(
+        endpoint,
         queryParameters: queryParams,
       );
 
@@ -135,8 +147,11 @@ class PhysiologicalDataService implements IPhysiologicalDataService {
         'interval': interval,
       };
 
-      final response = await _apiClient.client.get(
-        '/physiological-data/time-series',
+      final endpoint = '/physiological-data/time-series';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(
+        endpoint,
         queryParameters: queryParams,
       );
 

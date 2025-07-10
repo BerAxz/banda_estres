@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
 import '../../models/anxiety_event/anxiety_event.dart';
-import '../../core/api/api_client.dart';
+import '../../core/api/api_client_factory.dart';
 import '../../core/api/api_exception.dart';
 import '../../core/api/api_response.dart';
 import '../../core/api/services_interfaces.dart';
 
 /// Implementación concreta del servicio de eventos de ansiedad
 class AnxietyEventService implements IAnxietyEventService {
-  final ApiClient _apiClient;
+  final ApiClientFactory _apiClientFactory;
 
-  AnxietyEventService(this._apiClient);
+  AnxietyEventService(_) : _apiClientFactory = ApiClientFactory();
 
   @override
   Future<PaginatedResponse<AnxietyEvent>> getAnxietyEventsByUserId({
@@ -33,8 +33,11 @@ class AnxietyEventService implements IAnxietyEventService {
         if (resuelto != null) 'resuelto': resuelto,
       };
 
-      final response = await _apiClient.client.get(
-        '/usuarios/$usuarioId/eventos_ansiedad',
+      final endpoint = '/usuarios/$usuarioId/eventos_ansiedad';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(
+        endpoint,
         queryParameters: queryParams,
       );
 
@@ -50,7 +53,10 @@ class AnxietyEventService implements IAnxietyEventService {
   @override
   Future<ApiResponse<AnxietyEvent>> getAnxietyEventById(int id) async {
     try {
-      final response = await _apiClient.client.get('/anxiety-events/$id');
+      final endpoint = '/anxiety-events/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(endpoint);
 
       return ApiResponse.fromJson(
         response.data,
@@ -76,8 +82,11 @@ class AnxietyEventService implements IAnxietyEventService {
     String? notasUsuario,
   }) async {
     try {
-      final response = await _apiClient.client.post(
-        '/anxiety-events',
+      final endpoint = '/anxiety-events';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.post(
+        endpoint,
         data: {
           'usuario_id': usuarioId,
           'sesion_id': sesionId,
@@ -108,8 +117,11 @@ class AnxietyEventService implements IAnxietyEventService {
     Map<String, dynamic> data,
   ) async {
     try {
-      final response = await _apiClient.client.put(
-        '/anxiety-events/$id',
+      final endpoint = '/anxiety-events/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.put(
+        endpoint,
         data: data,
       );
 
@@ -125,7 +137,10 @@ class AnxietyEventService implements IAnxietyEventService {
   @override
   Future<ApiResponse<void>> deleteAnxietyEvent(int id) async {
     try {
-      final response = await _apiClient.client.delete('/anxiety-events/$id');
+      final endpoint = '/anxiety-events/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.delete(endpoint);
 
       return ApiResponse.fromJson(
         response.data,
@@ -142,8 +157,11 @@ class AnxietyEventService implements IAnxietyEventService {
     String? notasUsuario,
   }) async {
     try {
-      final response = await _apiClient.client.patch(
-        '/anxiety-events/$id/resolve',
+      final endpoint = '/anxiety-events/$id/resolve';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.patch(
+        endpoint,
         data: {
           'resuelto': true,
           if (notasUsuario != null) 'notas_usuario': notasUsuario,

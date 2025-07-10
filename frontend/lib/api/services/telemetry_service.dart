@@ -21,15 +21,15 @@ class TelemetryData {
     return TelemetryData(
       bpm: json['bpm'] ?? 0,
       spo2: json['spo2'] ?? 0,
-      temperature: (json['temperature'] ?? 0.0).toDouble(),
-      signalQuality: json['signal_quality'] ?? 0,
+      temperature: (json['temperatura'] ?? 0.0).toDouble(),
+      signalQuality: json['calidad_senal'] ?? 0,
     );
   }
 }
 
 /// Servicio para manejar la conexión WebSocket de telemetría
 class TelemetryService {
-  static const String _wsUrl = 'ws://192.168.1.89:3000/api/telemetry';
+  static const String _wsUrl = 'ws://192.168.1.89:8000/ws/datos-tiempo-real/2/';
   
   WebSocketChannel? _channel;
   StreamController<TelemetryData>? _dataController;
@@ -54,7 +54,7 @@ class TelemetryService {
         (data) {
           try {
             final jsonData = json.decode(data);
-            if (jsonData['type'] == 'telemetry' && jsonData['data'] != null) {
+            if (jsonData['type'] == 'nuevos_datos' && jsonData['data'] != null) {
               final telemetryData = TelemetryData.fromJson(jsonData['data']);
               _dataController!.add(telemetryData);
             }

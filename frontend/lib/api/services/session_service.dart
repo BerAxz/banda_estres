@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
 import '../../models/session/session.dart';
-import '../../core/api/api_client.dart';
+import '../../core/api/api_client_factory.dart';
 import '../../core/api/api_exception.dart';
 import '../../core/api/api_response.dart';
 import '../../core/api/services_interfaces.dart';
 
 /// Implementación concreta del servicio de sesiones
 class SessionService implements ISessionService {
-  final ApiClient _apiClient;
+  final ApiClientFactory _apiClientFactory;
 
-  SessionService(this._apiClient);
+  SessionService(_) : _apiClientFactory = ApiClientFactory();
 
 
   @override
@@ -30,8 +30,11 @@ class SessionService implements ISessionService {
         if (endDate != null) 'end_date': endDate.toIso8601String(),
       };
 
-      final response = await _apiClient.client.get(
-        '/usuarios/$usuarioId/sesiones',
+      final endpoint = '/usuarios/$usuarioId/sesiones';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(
+        endpoint,
         queryParameters: queryParams,
       );
 
@@ -64,8 +67,11 @@ class SessionService implements ISessionService {
         if (endDate != null) 'end_date': endDate.toIso8601String(),
       };
 
-      final response = await _apiClient.client.get(
-        '/sesiones',
+      final endpoint = '/sesiones';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(
+        endpoint,
         queryParameters: queryParams,
       );
 
@@ -81,7 +87,10 @@ class SessionService implements ISessionService {
   @override
   Future<ApiResponse<Session>> getSessionById(int id) async {
     try {
-      final response = await _apiClient.client.get('/sesiones/$id');
+      final endpoint = '/sesiones/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(endpoint);
 
       return ApiResponse.fromJson(
         response.data,
@@ -99,8 +108,11 @@ class SessionService implements ISessionService {
     String? notas,
   }) async {
     try {
-      final response = await _apiClient.client.post(
-        '/sesiones',
+      final endpoint = '/sesiones';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.post(
+        endpoint,
         data: {
           'usuario_id': usuarioId,
           'pulsera_id': pulseraId,
@@ -123,8 +135,11 @@ class SessionService implements ISessionService {
     Map<String, dynamic> data,
   ) async {
     try {
-      final response = await _apiClient.client.put(
-        '/sesiones/$id',
+      final endpoint = '/sesiones/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.put(
+        endpoint,
         data: data,
       );
 
@@ -140,8 +155,11 @@ class SessionService implements ISessionService {
   @override
   Future<ApiResponse<Session>> endSession(int id) async {
     try {
-      final response = await _apiClient.client.patch(
-        '/sesiones/$id/end',
+      final endpoint = '/sesiones/$id/end';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.patch(
+        endpoint,
         data: {
           'activa': false,
           'fecha_fin': DateTime.now().toIso8601String(),
@@ -160,7 +178,10 @@ class SessionService implements ISessionService {
   @override
   Future<ApiResponse<void>> deleteSession(int id) async {
     try {
-      final response = await _apiClient.client.delete('/sesiones/$id');
+      final endpoint = '/sesiones/$id';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.delete(endpoint);
 
       return ApiResponse.fromJson(
         response.data,
@@ -174,8 +195,11 @@ class SessionService implements ISessionService {
   @override
   Future<ApiResponse<Session?>> getActiveSession(int usuarioId) async {
     try {
-      final response = await _apiClient.client.get(
-        '/sesiones/active',
+      final endpoint = '/sesiones/active';
+      final client = _apiClientFactory.getClientForEndpoint(endpoint);
+      
+      final response = await client.get(
+        endpoint,
         queryParameters: {'usuario_id': usuarioId},
       );
 
