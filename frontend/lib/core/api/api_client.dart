@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 /// Client HTTP configurado para la aplicación
 /// Aplica el principio de responsabilidad única (SRP)
 class ApiClient {
-  static const String _baseUrl = 'http://192.168.1.82:3000/api';
+  static const String _baseUrl = 'http://192.168.1.89:3000/api';
   static const Duration _connectTimeout = Duration(seconds: 30);
   static const Duration _receiveTimeout = Duration(seconds: 30);
 
@@ -27,7 +28,7 @@ class ApiClient {
       LogInterceptor(
         requestBody: true,
         responseBody: true,
-        logPrint: (obj) => print('[API] $obj'),
+        logPrint: (obj) => debugPrint('[API] $obj'),
       ),
     );
 
