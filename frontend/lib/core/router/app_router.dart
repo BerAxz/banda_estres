@@ -1,5 +1,7 @@
 import 'package:frontend/screens/account_screen.dart';
 import 'package:frontend/screens/device_screen.dart';
+import 'package:frontend/screens/events_screen.dart';
+import 'package:frontend/screens/session_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/login_screen.dart';
@@ -7,7 +9,6 @@ import 'package:frontend/screens/register_screen.dart';
 import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/screens/menu_screen.dart';
 import 'package:frontend/screens/personal_data_screen.dart';
-import 'package:frontend/screens/placeholder_screen.dart';
 
 /// Configuración de rutas de la aplicación usando GoRouter
 class AppRouter {
@@ -84,11 +85,7 @@ class AppRouter {
         name: 'sessions',
         pageBuilder: (context, state) => NoTransitionPage(
           key: state.pageKey,
-          child: const PlaceholderScreen(
-            title: 'Sesiones',
-            icon: Icons.timeline_outlined,
-            description: 'Revisa tus sesiones de monitoreo y análisis.',
-          ),
+          child: const SessionScreen(),
         ),
       ),
       GoRoute(
@@ -96,11 +93,7 @@ class AppRouter {
         name: 'history',
         pageBuilder: (context, state) => NoTransitionPage(
           key: state.pageKey,
-          child: const PlaceholderScreen(
-            title: 'Historial de eventos',
-            icon: Icons.history_outlined,
-            description: 'Consulta el historial completo de eventos de estrés.',
-          ),
+          child: const EventsScreen(),
         ),
       ),
       
