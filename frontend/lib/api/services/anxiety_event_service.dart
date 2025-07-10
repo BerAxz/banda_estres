@@ -12,10 +12,10 @@ class AnxietyEventService implements IAnxietyEventService {
   AnxietyEventService(this._apiClient);
 
   @override
-  Future<PaginatedResponse<AnxietyEvent>> getAnxietyEvents({
+  Future<PaginatedResponse<AnxietyEvent>> getAnxietyEventsByUserId({
+    required int usuarioId,
     int page = 1,
     int pageSize = 20,
-    int? usuarioId,
     int? sesionId,
     AnxietyLevel? nivelAnsiedad,
     DateTime? startDate,
@@ -26,7 +26,6 @@ class AnxietyEventService implements IAnxietyEventService {
       final queryParams = <String, dynamic>{
         'page': page,
         'page_size': pageSize,
-        if (usuarioId != null) 'usuario_id': usuarioId,
         if (sesionId != null) 'sesion_id': sesionId,
         if (nivelAnsiedad != null) 'nivel_ansiedad': nivelAnsiedad.name,
         if (startDate != null) 'start_date': startDate.toIso8601String(),
@@ -35,7 +34,7 @@ class AnxietyEventService implements IAnxietyEventService {
       };
 
       final response = await _apiClient.client.get(
-        '/anxiety-events',
+        '/usuarios/$usuarioId/eventos_ansiedad',
         queryParameters: queryParams,
       );
 

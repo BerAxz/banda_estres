@@ -43,11 +43,13 @@ dependencies:
   go_router: ^16.0.0
   flutter_secure_storage: ^9.2.4
   flutter_svg: ^2.0.10+1
+  web_socket_channel: ^3.0.3
 
   flutter_screenutil: ^5.9.3
 
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +80,7 @@ flutter:
 
   assets:
     - assets/images/background.png
+    - assets/images/pulsera_imagen.png
     - assets/svg/
 
   fonts:

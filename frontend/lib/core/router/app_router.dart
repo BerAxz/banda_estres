@@ -1,8 +1,14 @@
+import 'package:frontend/screens/account_screen.dart';
+import 'package:frontend/screens/device_screen.dart';
+import 'package:frontend/screens/events_screen.dart';
+import 'package:frontend/screens/session_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/screens/register_screen.dart';
 import 'package:frontend/screens/home_screen.dart';
+import 'package:frontend/screens/menu_screen.dart';
+import 'package:frontend/screens/personal_data_screen.dart';
 
 /// Configuración de rutas de la aplicación usando GoRouter
 class AppRouter {
@@ -36,6 +42,58 @@ class AppRouter {
         pageBuilder: (context, state) => NoTransitionPage(
           key: state.pageKey,
           child: const HomeScreen(),
+        ),
+      ),
+      
+      // Ruta del menú
+      GoRoute(
+        path: '/menu',
+        name: 'menu',
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const MenuScreen(),
+        ),
+      ),
+      
+      // Rutas placeholder para el menú
+      GoRoute(
+        path: '/profile',
+        name: 'profile',
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const PersonalDataScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/account',
+        name: 'account',
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const AccountScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/device',
+        name: 'device',
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const DeviceScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/sessions',
+        name: 'sessions',
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const SessionScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/history',
+        name: 'history',
+        pageBuilder: (context, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const EventsScreen(),
         ),
       ),
       
