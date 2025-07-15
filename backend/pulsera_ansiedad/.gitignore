@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+.Python
+env/
+venv/
+ENV/
+*.env
+
+# Django
+*.log
+*.pot
+*.pyc
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+
+# VSCode/IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Migrations (opcional, solo si quieres ignorarlas)
+# Puedes mantenerlas si ya está estable tu estructura de modelos
+**/migrations/*.py
+**/migrations/__pycache__/
+
+# Test
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+htmlcov/
+
+# Pip
+pip-log.txt
+
+# Git
+*.orig
+
+# Others
+*.bak
+*.tmp
+
+# Cloudinary / media
+media/
+
+# Node (si tienes frontend en el mismo proyecto)
+node_modules/
